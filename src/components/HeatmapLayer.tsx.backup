@@ -1,11 +1,35 @@
 "use client";
 
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
 import { useMap } from 'react-leaflet';
 import 'leaflet.heat';
 
-// Type definitions are now in src/types/leaflet-heat.d.ts
+// Define the HeatLayer type that's missing from the default typings
+declare module "leaflet" {
+  interface HeatLayer extends L.Layer {
+    setLatLngs(latlngs: Array<[number, number, number?]>): this;
+    addLatLng(latlng: [number, number, number?]): this;
+    setOptions(options: any): this;
+    _canvas: HTMLCanvasElement;
+  }
+  
+  namespace HeatLayer {
+    interface Options {
+      minOpacity?: number;
+      maxZoom?: number;
+      max?: number;
+      radius?: number;
+      blur?: number;
+      gradient?: Record<number, string>;
+    }
+  }
+  
+  function heatLayer(
+    latlngs: Array<[number, number, number?]>,
+    options?: HeatLayer.Options
+  ): HeatLayer;
+}
 
 // Define interface for heat map points
 interface HeatPoint {
@@ -47,34 +71,21 @@ const HeatmapLayer = ({
   const map = useMap();
   const heatLayerRef = useRef<L.HeatLayer | null>(null);
   const [opacity, setOpacity] = useState(0.4);
-  // Pulsating animation effect for the heatmap with performance optimizations
+  // Pulsating animation effect for the heatmap
   useEffect(() => {
-    if (!animate) {
-      // Reset opacity to default when animation is turned off
-      setOpacity(0.6);
-      return;
-    }
+    if (!animate) return;
     
     let increasing = true;
     let interval: ReturnType<typeof setInterval>;
-    let lastUpdate = Date.now();
-    const animationFrameTime = 100; // ms between updates
     
     try {
       interval = setInterval(() => {
-        // Skip animation frames if too close together for better performance
-        const now = Date.now();
-        if (now - lastUpdate < animationFrameTime * 0.8) return;
-        
-        lastUpdate = now;
         setOpacity(prev => {
-          // Smoother transition with easing
           if (prev >= 0.8) increasing = false;
           if (prev <= 0.4) increasing = true;
-          const change = increasing ? 0.02 : -0.02;
-          return Math.max(0.4, Math.min(0.8, prev + change));
+          return increasing ? prev + 0.02 : prev - 0.02;
         });
-      }, animationFrameTime);
+      }, 100);
     } catch (error) {
       console.error('Error setting up animation interval:', error);
     }
@@ -83,40 +94,28 @@ const HeatmapLayer = ({
       if (interval) clearInterval(interval);
     };
   }, [animate]);
-  // Memoize the heatpoints calculation to avoid unnecessary recalculations
-  const processedHeatPoints = useMemo(() => {
-    if (!points || !Array.isArray(points)) {
-      console.warn('Invalid points array provided');
-      return [];
-    }
-    
-    // Ensure points array exists and filter out invalid points
-    const validPoints = points.filter(p => p && typeof p === 'object' && 'lat' in p && 'lng' in p && 
-      typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng));
-    
-    if (validPoints.length === 0) {
-      console.warn('No valid points provided for heatmap layer');
-      return [];
-    }
-    
-    return validPoints.map(p => [
-      p.lat,
-      p.lng,
-      p.intensity ? Math.min(1.0, p.intensity * 1.8) : 0.8 // Further increase intensity for better visibility
-    ]) as [number, number, number][];
-  }, [points]);
-  
   useEffect(() => {
     if (!map) return;
+      // Convert points to format required by Leaflet.heat with enhanced intensity
+    // Ensure points array exists and filter out invalid points
+    const validPoints = Array.isArray(points) 
+      ? points.filter(p => p && typeof p === 'object' && 'lat' in p && 'lng' in p && 
+          typeof p.lat === 'number' && typeof p.lng === 'number')
+      : [];
+    const heatPoints = validPoints.map(p => [
+      p.lat,
+      p.lng,
+      p.intensity ? Math.min(1.0, p.intensity * 1.8) : 0.8 // Further increase intensity for better visibility    ]) as [number, number, number][];
     
     // Don't proceed if there are no valid points
-    if (processedHeatPoints.length === 0) {
+    if (validPoints.length === 0) {
+      console.warn('No valid points provided for heatmap layer');
       return () => {};
     }
     
     // Create and add heat layer with improved visibility settings
     try {
-      const heatLayer = L.heatLayer(processedHeatPoints, {
+      const heatLayer = L.heatLayer(heatPoints, {
         radius,
         blur,
         maxZoom,
@@ -135,29 +134,14 @@ const HeatmapLayer = ({
       if (animate && heatLayer._canvas) {
         heatLayer._canvas.classList.add('pulse');
       }
-        // Update the layer if options change
-      if (heatLayerRef.current !== heatLayer) {
-        // Clean up previous layer if it exists
-        try {
-          const prevLayer = heatLayerRef.current;
-          if (prevLayer && map.hasLayer(prevLayer)) {
-            map.removeLayer(prevLayer);
-          }
-        } catch (e) {
-          console.warn('Error removing previous heat layer:', e);
-        }
-      }
-
-      // Cleanup function to remove layer when component unmounts or when dependencies change
+      
+      // Cleanup function to remove layer when component unmounts
       return () => {
         try {
           if (map && heatLayer && map.hasLayer(heatLayer)) {
             map.removeLayer(heatLayer);
           }
-          // Only set to null if this exact layer is still the current one
-          if (heatLayerRef.current === heatLayer) {
-            heatLayerRef.current = null;
-          }
+          heatLayerRef.current = null;
         } catch (error) {
           console.warn('Error while removing heatmap layer:', error);
         }
@@ -166,7 +150,7 @@ const HeatmapLayer = ({
       console.error('Error creating heatmap layer:', error);
       return () => {}; // Return empty cleanup function if creation failed
     }
-  }, [map, processedHeatPoints, radius, blur, maxZoom, max, gradient, opacity, animate]);
+  }, [map, points, radius, blur, maxZoom, max, gradient, opacity, animate]);
 
   // This component doesn't render anything directly
   return null;

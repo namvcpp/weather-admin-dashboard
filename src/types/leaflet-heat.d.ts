@@ -2,24 +2,31 @@
 import * as L from "leaflet";
 
 declare module "leaflet.heat" {
-  interface HeatLayerOptions {
-    minOpacity?: number;
-    maxZoom?: number;
-    max?: number;
-    radius?: number;
-    blur?: number;
-    gradient?: Record<number, string>;
-  }
+  // No declarations needed here since we're declaring them in the Leaflet module
 }
 
 declare module "leaflet" {
+  interface HeatLayer extends L.Layer {
+    setLatLngs(latlngs: Array<[number, number, number?]>): this;
+    addLatLng(latlng: [number, number, number?]): this;
+    setOptions(options: HeatLayer.Options): this;
+    redraw(): void;
+    _canvas: HTMLCanvasElement;
+  }
+  
+  namespace HeatLayer {
+    interface Options {
+      minOpacity?: number;
+      maxZoom?: number;
+      max?: number;
+      radius?: number;
+      blur?: number;
+      gradient?: Record<number, string>;
+    }
+  }
+  
   function heatLayer(
     latlngs: Array<[number, number, number?]>,
-    options?: L.HeatLayerOptions
-  ): L.Layer;
-
-  interface Layer {
-    setLatLngs(latlngs: Array<[number, number, number?]>): void;
-    redraw(): void;
-  }
+    options?: HeatLayer.Options
+  ): HeatLayer;
 }
