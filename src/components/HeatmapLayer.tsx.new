@@ -1,0 +1,104 @@
+"use client";
+
+import { useEffect, useState, useRef } from 'react';
+import L from 'leaflet';
+import { useMap } from 'react-leaflet';
+import 'leaflet.heat';
+
+// Define interface for heat map points
+interface HeatPoint {
+  lat: number;
+  lng: number;
+  intensity?: number; // Optional intensity value
+}
+
+interface HeatmapLayerProps {
+  points: HeatPoint[];
+  radius?: number;
+  blur?: number;
+  maxZoom?: number;
+  max?: number;
+  gradient?: Record<number, string>;
+  animate?: boolean;
+}
+
+// Default gradient colors for flood heatmap with improved visibility
+const defaultGradient = {
+  0.0: '#3b82f6', // blue for low
+  0.3: '#60a5fa', // lighter blue for low-medium
+  0.5: '#f59e0b', // amber for medium
+  0.7: '#fb923c', // lighter orange for medium-high
+  1.0: '#ef4444'  // red for high
+};
+
+const HeatmapLayer = ({
+  points,
+  radius = 30,
+  blur = 20,
+  maxZoom = 18,
+  max = 1.0,
+  gradient = defaultGradient,
+  animate = true
+}: HeatmapLayerProps) => {
+  const map = useMap();
+  const heatLayerRef = useRef<any>(null);
+  const [opacity, setOpacity] = useState(0.4);
+
+  // Pulsating animation effect for the heatmap
+  useEffect(() => {
+    if (!animate) return;
+    
+    let increasing = true;
+    const interval = setInterval(() => {
+      setOpacity(prev => {
+        if (prev >= 0.8) increasing = false;
+        if (prev <= 0.4) increasing = true;
+        return increasing ? prev + 0.02 : prev - 0.02;
+      });
+    }, 100);
+    
+    return () => clearInterval(interval);
+  }, [animate]);
+
+  useEffect(() => {
+    if (!map) return;
+    
+    // Convert points to format required by Leaflet.heat with enhanced intensity
+    const heatPoints = points.map(p => [
+      p.lat,
+      p.lng,
+      p.intensity ? Math.min(1.0, p.intensity * 1.8) : 0.8 // Further increase intensity for better visibility
+    ]) as [number, number, number][];
+    
+    // Create and add heat layer with improved visibility settings
+    const heatLayer = L.heatLayer(heatPoints, {
+      radius,
+      blur,
+      maxZoom,
+      max,
+      gradient,
+      minOpacity: opacity // Use the animated opacity value
+    }).addTo(map);
+    
+    // Add pulse class to the canvas element for animation if needed
+    if (animate) {
+      // Access the internal canvas property (requires type assertion)
+      const heatLayerAny = heatLayer as any;
+      if (heatLayerAny._canvas) {
+        heatLayerAny._canvas.classList.add('pulse');
+      }
+    }
+    
+    heatLayerRef.current = heatLayer;
+
+    // Cleanup function to remove layer when component unmounts
+    return () => {
+      map.removeLayer(heatLayer);
+    };
+  }, [map, points, radius, blur, maxZoom, max, gradient, opacity, animate]);
+
+  // This component doesn't render anything directly
+  return null;
+};
+
+export default HeatmapLayer;

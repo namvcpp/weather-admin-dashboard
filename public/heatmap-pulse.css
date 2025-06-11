@@ -1,0 +1,47 @@
+/* Heat map pulse animation effect */
+@keyframes heatPulse {
+  0% {
+    filter: contrast(100%) brightness(100%);
+  }
+  50% {
+    filter: contrast(140%) brightness(115%);
+  }
+  100% {
+    filter: contrast(100%) brightness(100%);
+  }
+}
+
+.leaflet-heatmap-layer.pulse {
+  animation: heatPulse 2s infinite ease-in-out;
+}
+
+/* Enhanced legend for heatmap */
+.heatmap-legend {
+  background: linear-gradient(to right, #3b82f6, #60a5fa, #f59e0b, #fb923c, #ef4444);
+  height: 10px;
+  border-radius: 4px;
+  margin: 5px 0;
+}
+
+/* Enhance area markers */
+.leaflet-tooltip.risk-tooltip {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.risk-tooltip.high {
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+.risk-tooltip.medium {
+  background-color: rgba(245, 158, 11, 0.9);
+  color: white;
+}
+
+.risk-tooltip.low {
+  background-color: rgba(59, 130, 246, 0.9);
+  color: white;
+}

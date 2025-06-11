@@ -1,0 +1,53 @@
+/* Heat map pulse animation effect - enhanced for better visibility */
+@keyframes heatPulse {
+  0% {
+    filter: contrast(115%) brightness(105%);
+    opacity: 0.8;
+  }
+  50% {
+    filter: contrast(160%) brightness(125%);
+    opacity: 0.95;
+  }
+  100% {
+    filter: contrast(115%) brightness(105%);
+    opacity: 0.8;
+  }
+}
+
+.leaflet-heatmap-layer.pulse {
+  animation: heatPulse 3s infinite ease-in-out;
+  box-shadow: 0 0 20px rgba(2, 132, 199, 0.6); /* Enhanced glow effect */
+  mix-blend-mode: screen;
+}
+
+/* Enhanced legend for heatmap - updated with new colors */
+.heatmap-legend {
+  background: linear-gradient(to right, #f0f9ff, #bae6fd, #38bdf8, #0284c7, #1e40af, #1e3a8a);
+  height: 12px; /* Slightly taller for better visibility */
+  border-radius: 4px;
+  margin: 5px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+/* Enhance area markers */
+.leaflet-tooltip.risk-tooltip {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.risk-tooltip.high {
+  background-color: rgba(30, 64, 175, 0.9); /* dark blue */
+  color: white;
+}
+
+.risk-tooltip.medium {
+  background-color: rgba(59, 130, 246, 0.9); /* medium blue */
+  color: white;
+}
+
+.risk-tooltip.low {
+  background-color: rgba(147, 197, 253, 0.9); /* light blue */
+  color: white;
+}

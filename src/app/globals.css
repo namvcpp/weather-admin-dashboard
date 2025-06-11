@@ -3,6 +3,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #1f2937;
+  --danger: #ef4444;
+  --danger-foreground: #ffffff;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --card-foreground: #171717;
 }
 
 @theme inline {
@@ -16,6 +29,19 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --secondary: #1f2937;
+    --secondary-foreground: #f3f4f6;
+    --danger: #ef4444;
+    --danger-foreground: #ffffff;
+    --success: #22c55e;
+    --success-foreground: #ffffff;
+    --warning: #f59e0b;
+    --warning-foreground: #ffffff;
+    --border: #374151;
+    --card: #111827;
+    --card-foreground: #ededed;
   }
 }
 
@@ -23,4 +49,82 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Leaflet map styling */
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  border-radius: 0.5rem;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced leaflet heatmap visibility */
+.leaflet-heatmap-layer {
+  opacity: 0.85 !important;
+  mix-blend-mode: screen;
+}
+
+/* Enhanced heatmap canvas styles */
+.leaflet-heatmap-layer {
+  opacity: 0.85 !important; /* Slightly increase opacity for better visibility */
+  filter: contrast(120%) brightness(105%); /* Enhance contrast and brightness */
+  transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out; /* Smooth transitions */
+}
+
+/* Hover effect on the map controls to improve usability */
+.leaflet-control {
+  transition: all 0.2s ease;
+}
+
+.leaflet-control:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhance visibility for markers on the map */
+.leaflet-marker-icon {
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-sidebar {
+  min-height: 100vh;
+  border-right: 1px solid var(--border);
+}
+
+.dashboard-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  border-bottom: 2px solid var(--primary);
+  color: var(--primary);
 }
