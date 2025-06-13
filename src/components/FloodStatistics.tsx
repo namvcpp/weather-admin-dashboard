@@ -5,11 +5,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 // Mock flood data for the statistics
 const floodData = [
-  { region: 'North', current: 25, previous: 15, warning: 30 },
-  { region: 'South', current: 45, previous: 20, warning: 40 },
-  { region: 'East', current: 15, previous: 10, warning: 35 },
-  { region: 'West', current: 32, previous: 28, warning: 40 },
-  { region: 'Central', current: 28, previous: 22, warning: 45 },
+  { region: 'Hải Châu', current: 25, previous: 15, warning: 30 },
+  { region: 'Sơn Trà', current: 45, previous: 20, warning: 40 },
+  { region: 'Ngũ Hành Sơn', current: 15, previous: 10, warning: 35 },
+  { region: 'Liên Chiểu', current: 32, previous: 28, warning: 40 },
+  { region: 'Thanh Khê', current: 28, previous: 22, warning: 45 },
+  { region: 'Cẩm Lệ', current: 38, previous: 25, warning: 42 },
 ];
 
 interface FloodStatisticsProps {

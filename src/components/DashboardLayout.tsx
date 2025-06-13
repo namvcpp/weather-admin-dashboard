@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <UserCircle className="mr-2" />
             <div>
               <p className="text-sm font-medium">Admin User</p>
-              <p className="text-xs text-secondary-foreground">admin@example.com</p>
+              <p className="text-xs text-secondary-foreground">23a5.namvancong@lqddn.edu.vn</p>
             </div>
           </div>
         </div>

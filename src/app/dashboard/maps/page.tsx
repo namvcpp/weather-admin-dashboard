@@ -116,30 +116,29 @@ export default function MapsPage() {
             </div>
           </div>          <div className="p-3 bg-secondary rounded-md">
             <h3 className="font-medium">Layers</h3>
-            <div className="mt-2 space-y-2">
-              <div className="flex items-center">
+            <div className="mt-2 space-y-2">              <div className="flex items-center">
                 <input type="checkbox" id="layer1" className="mr-2" checked />
-                <label htmlFor="layer1" className="text-sm">Rainfall Zones</label>
+                <label htmlFor="layer1" className="text-sm">Vùng mưa các quận</label>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" id="layer2" className="mr-2" checked />
-                <label htmlFor="layer2" className="text-sm">Weather Stations</label>
+                <label htmlFor="layer2" className="text-sm">Trạm thời tiết</label>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" id="layer3" className="mr-2" checked />
-                <label htmlFor="layer3" className="text-sm">Rainfall Intensity</label>
+                <label htmlFor="layer3" className="text-sm">Cường độ mưa</label>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" id="layer4" className="mr-2" checked />
-                <label htmlFor="layer4" className="text-sm">Water Level Indicators</label>
+                <label htmlFor="layer4" className="text-sm">Mực nước các quận</label>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" id="layer5" className="mr-2" />
-                <label htmlFor="layer5" className="text-sm">Population Density</label>
+                <label htmlFor="layer5" className="text-sm">Mật độ dân cư</label>
               </div>
               <div className="flex items-center">
                 <input type="checkbox" id="layer6" className="mr-2" />
-                <label htmlFor="layer4" className="text-sm">Infrastructure</label>
+                <label htmlFor="layer4" className="text-sm">Cơ sở hạ tầng</label>
               </div>
             </div>
           </div>
@@ -163,11 +162,10 @@ export default function MapsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="card">
           <h2 className="text-lg font-medium mb-4">Recent Location Activity</h2>
-          <div className="space-y-3">
-            {[              { time: "10 mins ago", action: "New rainfall warning added", area: "Central District", user: "System" },
-              { time: "25 mins ago", action: "Weather station status updated", area: "North Station", user: "Jane Smith" },
-              { time: "1 hour ago", action: "Heavy rain alert issued", area: "Eastern River", user: "John Doe" },
-              { time: "2 hours ago", action: "Risk assessment updated", area: "Southern Region", user: "System" },
+          <div className="space-y-3">            {[              { time: "10 mins ago", action: "New rainfall warning added", area: "Hải Châu", user: "System" },
+              { time: "25 mins ago", action: "Weather station status updated", area: "Sơn Trà", user: "Thanh Trúc" },
+              { time: "1 hour ago", action: "Heavy rain alert issued", area: "Ngũ Hành Sơn", user: "Quốc Thành" },
+              { time: "2 hours ago", action: "Risk assessment updated", area: "Cẩm Lệ", user: "System" },
             ].map((item, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-secondary/50 rounded-md">
                 <div>
@@ -184,14 +182,13 @@ export default function MapsPage() {
         </div>
         <div className="card">
           <h2 className="text-lg font-medium mb-4">Map Coordinates</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-secondary/50 rounded-md">
+          <div className="grid grid-cols-2 gap-4">            <div className="p-3 bg-secondary/50 rounded-md">
               <p className="text-sm text-secondary-foreground">Center Latitude</p>
-              <p className="text-lg font-mono">51.505</p>
+              <p className="text-lg font-mono">16.047</p>
             </div>
             <div className="p-3 bg-secondary/50 rounded-md">
               <p className="text-sm text-secondary-foreground">Center Longitude</p>
-              <p className="text-lg font-mono">-0.09</p>
+              <p className="text-lg font-mono">108.206</p>
             </div>
             <div className="p-3 bg-secondary/50 rounded-md">
               <p className="text-sm text-secondary-foreground">Zoom Level</p>

@@ -22,32 +22,32 @@ const DefaultIcon = L.icon({
 });
 
 // Mock data for flood zones/alerts
-const floodZones = [  { id: 1, position: [16.047, 108.206], radius: 2000, level: 'severe', message: 'Heavy rainfall expected in this area' },
-  { id: 2, position: [16.067, 108.22], radius: 1500, level: 'moderate', message: 'Moderate rainfall expected' },
-  { id: 3, position: [16.03, 108.19], radius: 1000, level: 'low', message: 'Light rainfall expected' },
-];  // Generate more detailed data points for flood heatmap visualization with improved visibility
-const generateFloodHeatData = () => {
-  // Base points - areas with highest intensity in Da Nang, Vietnam
+const floodZones = [  
+  { id: 1, position: [16.047, 108.206], radius: 2000, level: 'severe', message: 'Heavy rainfall expected in Hải Châu district' },
+  { id: 2, position: [16.067, 108.22], radius: 1500, level: 'moderate', message: 'Moderate rainfall expected in Sơn Trà district' },
+  { id: 3, position: [16.03, 108.19], radius: 1000, level: 'low', message: 'Light rainfall expected in Cẩm Lệ district' },
+];// Generate more detailed data points for flood heatmap visualization with improved visibility
+const generateFloodHeatData = () => {  // Base points - areas with highest intensity in Da Nang, Vietnam
   const basePoints = [
-    { lat: 16.047, lng: 108.206, intensity: 1.0, name: "City Center" },      // City Center - severe
-    { lat: 16.067, lng: 108.22, intensity: 0.95, name: "Son Tra" },          // Son Tra - severe
-    { lat: 16.03, lng: 108.19, intensity: 0.9, name: "Hoa Vang" },           // Hoa Vang - severe
-    { lat: 16.055, lng: 108.195, intensity: 0.95, name: "Hai Chau" },        // Hai Chau - severe
-    { lat: 16.075, lng: 108.17, intensity: 0.9, name: "Lien Chieu" },        // Lien Chieu - severe
-    { lat: 16.06, lng: 108.24, intensity: 0.85, name: "East Da Nang" },      // East of city
-    { lat: 16.04, lng: 108.17, intensity: 0.9, name: "West Da Nang" },       // West of city
-    { lat: 16.02, lng: 108.22, intensity: 0.85, name: "South Da Nang" },     // South of city
+    { lat: 16.047, lng: 108.206, intensity: 1.0, name: "Hải Châu" },         // Hai Chau district - severe
+    { lat: 16.067, lng: 108.22, intensity: 0.95, name: "Sơn Trà" },          // Son Tra district - severe
+    { lat: 16.03, lng: 108.19, intensity: 0.9, name: "Hòa Vang" },           // Hoa Vang district - severe
+    { lat: 16.055, lng: 108.195, intensity: 0.95, name: "Thanh Khê" },       // Thanh Khe district - severe
+    { lat: 16.075, lng: 108.17, intensity: 0.9, name: "Liên Chiểu" },        // Lien Chieu district - severe
+    { lat: 16.06, lng: 108.24, intensity: 0.85, name: "Ngũ Hành Sơn" },      // Ngu Hanh Son district
+    { lat: 16.04, lng: 108.17, intensity: 0.9, name: "Cẩm Lệ" },             // Cam Le district
+    { lat: 16.02, lng: 108.22, intensity: 0.85, name: "Hòa Vang" },          // Hoa Vang district
     
     // Add more concentrated points around rivers and low-lying areas
-    { lat: 16.058, lng: 108.223, intensity: 1.0, name: "Han River North" },  // Han River area - high risk
-    { lat: 16.046, lng: 108.227, intensity: 1.0, name: "Han River South" },  // Han River area - high risk
-    { lat: 16.062, lng: 108.172, intensity: 0.9, name: "Cu De River" },      // Cu De River - high risk
-    { lat: 16.031, lng: 108.211, intensity: 0.95, name: "Cam Le River" },    // Cam Le River - high risk
+    { lat: 16.058, lng: 108.223, intensity: 1.0, name: "Sông Hàn - Hải Châu" },   // Han River area - high risk
+    { lat: 16.046, lng: 108.227, intensity: 1.0, name: "Sông Hàn - Sơn Trà" },    // Han River area - high risk
+    { lat: 16.062, lng: 108.172, intensity: 0.9, name: "Sông Cu Đê - Liên Chiểu" }, // Cu De River - high risk
+    { lat: 16.031, lng: 108.211, intensity: 0.95, name: "Sông Cẩm Lệ" },          // Cam Le River - high risk
     
     // Add coastal flood risk zones
-    { lat: 16.098, lng: 108.247, intensity: 0.8, name: "North Coast" },      // Northern coast
-    { lat: 16.048, lng: 108.257, intensity: 0.85, name: "Central Coast" },   // Central coast
-    { lat: 16.001, lng: 108.244, intensity: 0.8, name: "South Coast" }       // Southern coast
+    { lat: 16.098, lng: 108.247, intensity: 0.8, name: "Bờ biển Sơn Trà" },       // Son Tra coastal area
+    { lat: 16.048, lng: 108.257, intensity: 0.85, name: "Bờ biển Ngũ Hành Sơn" }, // Ngu Hanh Son coastal area
+    { lat: 16.001, lng: 108.244, intensity: 0.8, name: "Bờ biển phía Nam" }       // Southern coastal area
   ];
   
   // Generate additional points around base points to create a more natural spread
@@ -132,9 +132,9 @@ const generateFloodHeatData = () => {
 
 // Mock data for weather stations
 const weatherStations = [
-  { id: 1, position: [16.047, 108.206], name: 'Da Nang Central', temperature: 32, humidity: 75, rainfall: 3.5 },
-  { id: 2, position: [16.067, 108.22], name: 'Son Tra Peninsula', temperature: 31, humidity: 80, rainfall: 4.2 },
-  { id: 3, position: [16.03, 108.19], name: 'Hoa Vang District', temperature: 33, humidity: 72, rainfall: 2.8 },
+  { id: 1, position: [16.047, 108.206], name: 'Hải Châu', temperature: 32, humidity: 75, rainfall: 3.5 },
+  { id: 2, position: [16.067, 108.22], name: 'Sơn Trà', temperature: 31, humidity: 80, rainfall: 4.2 },
+  { id: 3, position: [16.03, 108.19], name: 'Hòa Vang', temperature: 33, humidity: 72, rainfall: 2.8 },
 ];
 
 // Mock data for water level monitoring stations
@@ -142,7 +142,7 @@ const waterLevelData = [
   { 
     id: 1, 
     position: [16.059, 108.226] as [number, number], 
-    name: 'Han River Bridge',
+    name: 'Cầu Sông Hàn - Hải Châu',
     currentLevel: 3.2, 
     maxLevel: 5.0, 
     warningLevel: 2.5,
@@ -152,17 +152,16 @@ const waterLevelData = [
   { 
     id: 2, 
     position: [16.031, 108.211] as [number, number], 
-    name: 'Cam Le River',
+    name: 'Sông Cẩm Lệ - Cẩm Lệ',
     currentLevel: 3.8, 
     maxLevel: 5.0, 
     warningLevel: 2.5,
     dangerLevel: 4.0,
     timestamp: '2023-05-10 08:20:00'
-  },
-  { 
+  },  { 
     id: 3, 
     position: [16.063, 108.173] as [number, number], 
-    name: 'Cu De River',
+    name: 'Sông Cu Đê - Liên Chiểu',
     currentLevel: 1.8, 
     maxLevel: 4.5, 
     warningLevel: 2.0,
@@ -172,7 +171,7 @@ const waterLevelData = [
   { 
     id: 4, 
     position: [16.045, 108.257] as [number, number], 
-    name: 'East Coast',
+    name: 'Bờ biển Ngũ Hành Sơn',
     currentLevel: 1.5, 
     maxLevel: 4.0, 
     warningLevel: 1.8,
